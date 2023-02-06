@@ -12,6 +12,6 @@ public class ProductsNotAvailableException extends RuntimeException {
 	private static final long serialVersionUID = -1438047260809820991L;
 
 	public ProductsNotAvailableException() {
-		super("No se pueden encontrar productos");
+		super("No existen productos en stock.");
 	}
 }

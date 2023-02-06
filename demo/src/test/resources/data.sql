@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS PRODUCT;
+DROP TABLE IF EXISTS STOCK;
+DROP TABLE IF EXISTS SIZE;
+
+CREATE TABLE PRODUCT ( 
+   id INT NOT NULL, 
+   sequence INT NOT NULL
+);
+
+CREATE TABLE STOCK ( 
+   sizeId INT NOT NULL, 
+   quantity INT NOT NULL
+);
+
+CREATE TABLE SIZE ( 
+   id INT NOT NULL, 
+   productId INT NOT NULL,
+   backSoon BOOLEAN, 
+   special BOOLEAN
+);
+INSERT INTO PRODUCT (id,sequence) VALUES (1,1);
+INSERT INTO SIZE (id, productId, backSoon, special) VALUES (1,1,true,true);
+INSERT INTO STOCK (sizeId,quantity)  VALUES (1,1);
