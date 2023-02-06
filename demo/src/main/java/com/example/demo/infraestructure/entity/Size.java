@@ -6,18 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 @Entity
 public class Size {
 	
 	@Id
 	private Integer id;
-	
-//	@Column(name = "PRODUCTID")
-//	private Integer productId;
-	
+		
 	@Column(name = "BACKSOON")
 	private boolean backSoon;
 	
@@ -25,7 +24,7 @@ public class Size {
 	
 	@OneToOne
 	@JoinColumn(name = "PRODUCTID")
-	Product product;
+	private Product product;
 	
 	@OneToOne
 	@JoinColumn(name = "id", referencedColumnName="SIZEID")
