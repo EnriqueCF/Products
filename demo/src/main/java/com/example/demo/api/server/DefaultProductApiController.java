@@ -36,7 +36,7 @@ public class DefaultProductApiController implements ProductApiController {
 	public ResponseEntity<List<Integer>> getAvailableProducts() {
 		Optional<List<ProductDomain>> products = Optional.ofNullable(productService.getAvailableProducts());
 
-		if (products.isEmpty()) {
+		if (products.isEmpty() || products.get().isEmpty()) {
 			throw new ProductsNotAvailableException();
 		} else {
 			List<Integer> result = products.get().stream()

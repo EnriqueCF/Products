@@ -74,6 +74,35 @@ class DefaultProductServiceTests {
 		// Then
 		List<ProductDomain> productos = service.getAvailableProducts();
 
-		assertThat(productos.isEmpty()).isTrue();
+		assertThat(productos).isEmpty();
+	}
+	
+	@Test
+	@DisplayName("Lista de productos con tipo especial")
+	void givenProcductWhenGetSpecialProductsThenReturnList() {
+		// Given
+		List<Size> sizes = new ArrayList<>();
+		Product product1 = Product.builder().id(1).sequence(10).build();
+		Stock stock11 = Stock.builder().sizeId(11).quantity(0).build();
+		Stock stock12 = Stock.builder().sizeId(12).quantity(0).build();
+		Stock stock13 = Stock.builder().sizeId(13).quantity(0).build();
+		Size size11 = Size.builder().id(11).special(false).backSoon(true).product(product1).stock(stock11).build();
+		Size size12 = Size.builder().id(12).special(false).backSoon(false).product(product1).stock(stock12).build();
+		Size size13 = Size.builder().id(13).special(true).backSoon(true).product(product1).stock(stock13).build();
+		sizes.add(size13);
+		sizes.add(size12);
+		sizes.add(size11);
+
+		ProductDomain productDomain = ProductDomain.builder().id(1).sequence(10).build();
+
+		// When
+		when(sizeRepository.findAll()).thenReturn(sizes);
+		when(productMapper.entityToDomain(product1)).thenReturn(productDomain);
+
+		// Then
+		List<ProductDomain> productos = service.getAvailableProducts();
+
+		assertThat(productos.get(0).getId()).isEqualTo(1);
+		assertThat(productos.get(0).getSequence()).isEqualTo(10);
 	}
 }

@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,9 +35,9 @@ class DefaultProductApiControllerTests {
 	private ProductDomainMapper productMapper;
 	
 	@Test
+	@DisplayName("Test GET productos con stock")
 	void givenProductsWhenGetAvailableThenReturnListOfIds() throws Exception {		
 		// Given
-		
 		List<ProductDomain> products = new ArrayList<>();
 		ProductDomain product1 = ProductDomain.builder().id(1).sequence(10).build();
 		ProductDomain product2 = ProductDomain.builder().id(5).sequence(6).build();
@@ -50,14 +51,12 @@ class DefaultProductApiControllerTests {
 		ProductResource resource3 = ProductResource.builder().id(3).sequence(13).build();
 
 		// When
-
 		when(productService.getAvailableProducts()).thenReturn(products);
 		when(productMapper.domainToResource(product1)).thenReturn(resource1);
 		when(productMapper.domainToResource(product2)).thenReturn(resource2);
 		when(productMapper.domainToResource(product3)).thenReturn(resource3);
 
 		// Then
-		
 		mvc.perform(get("/products/available")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -66,5 +65,21 @@ class DefaultProductApiControllerTests {
 		        .andExpect(jsonPath("$[0]", is(5)))
 		        .andExpect(jsonPath("$[1]", is(1)))
 		        .andExpect(jsonPath("$[2]", is(3)));
+	}
+	
+	@Test
+	@DisplayName("Test GET productos sin stock")
+	void givenProductsWhenGetAvailableThenReturnNull() throws Exception {		
+		// Given
+		List<ProductDomain> products = new ArrayList<>();
+
+		// When
+		when(productService.getAvailableProducts()).thenReturn(products);
+
+		// Then
+		mvc.perform(get("/products/available")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError());
 	}
 }
