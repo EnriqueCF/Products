@@ -35,18 +35,17 @@ public class DefaultProductApiController implements ProductApiController {
 	@Override
 	@GetMapping("/available")
 	public ResponseEntity<List<Integer>> getAvailableProducts() {
-		List<Integer> result = new ArrayList<>();
 		Optional<List<ProductDomain>> products = Optional.ofNullable(productService.getAvailableProducts());
 
 		if (products.isEmpty()) {
 			throw new ProductsNotAvailableException();
 		} else {
-			result = products.get().stream()
+			List<Integer> result = products.get().stream()
 					.map(productMapper::domainToResource)
 					.sorted(Comparator.comparing(ProductResource::getSequence))
 					.map(ProductResource::getId)
 					.collect(Collectors.toList());
+			return ResponseEntity.ok(result);
 		}
-		return ResponseEntity.ok(result);
 	}
 }
