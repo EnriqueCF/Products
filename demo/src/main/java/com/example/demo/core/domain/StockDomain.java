@@ -1,8 +1,10 @@
 package com.example.demo.core.domain;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
+@Builder
 public class StockDomain {
 
 	private Integer sizeId;

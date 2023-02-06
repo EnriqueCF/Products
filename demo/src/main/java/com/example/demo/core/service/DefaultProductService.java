@@ -40,7 +40,7 @@ public class DefaultProductService implements ProductService {
 					.collect(Collectors.groupingBy(Size::getProduct));
 			
 			List<Product> results = sizesByProductId.entrySet().stream()
-					.filter(e -> hasAnyProduct(e.getValue()))
+					.filter(e -> hasAnyProductWithStock(e.getValue()))
 					.map(Entry::getKey)
 					.collect(Collectors.toList());
 			
@@ -52,7 +52,7 @@ public class DefaultProductService implements ProductService {
 		return availableProducts;
 	}
 
-	private boolean hasAnyProduct(List<Size> sizes) {
+	private boolean hasAnyProductWithStock(List<Size> sizes) {
 		boolean hasStock = false;
 
 		boolean hasSpecialSizes = sizes.stream().anyMatch(specialSize);
